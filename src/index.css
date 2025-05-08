@@ -98,15 +98,15 @@
   }
 
   .user-message {
-    @apply bg-truck-dark-blue text-white ml-12;
+    @apply bg-[#2d3748] text-white ml-12;
   }
 
   .assistant-message {
-    @apply bg-gray-100 text-truck-dark-gray mr-12;
+    @apply bg-[#1f2937] text-white mr-12 border-l-4 border-truck-yellow;
   }
 
   .typing-indicator span {
-    @apply inline-block w-2 h-2 bg-truck-blue rounded-full mx-0.5 animate-pulse-slow;
+    @apply inline-block w-2 h-2 bg-truck-yellow rounded-full mx-0.5 animate-pulse-slow;
   }
 
   .typing-indicator span:nth-child(2) {

@@ -2,7 +2,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Mic, Send, Image, Upload } from "lucide-react";
+import { Mic, Send, Image, Upload, MessageSquare } from "lucide-react";
 import { cn } from '@/lib/utils';
 import { useToast } from "@/hooks/use-toast";
 
@@ -26,14 +26,14 @@ const ChatInterface = ({ apiKey }: ChatInterfaceProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
-  // Speech recognition setup
-  let recognition: SpeechRecognition | null = null;
+  // Speech recognition setup with proper type handling
+  let recognition: any = null;
 
   useEffect(() => {
     if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
       // @ts-ignore - TypeScript doesn't know about webkit prefixed version
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      recognition = new SpeechRecognition();
+      const SpeechRecognitionAPI = window.SpeechRecognition || window.webkitSpeechRecognition;
+      recognition = new SpeechRecognitionAPI();
       recognition.continuous = true;
       recognition.interimResults = true;
       
@@ -65,7 +65,7 @@ const ChatInterface = ({ apiKey }: ChatInterfaceProps) => {
     setTimeout(() => {
       setMessages([{
         role: 'assistant', 
-        content: 'Willkommen! Ich bin Ihr Assistent für die Fahrzeugbegutachtung. Können Sie mir bitte einige grundlegende Informationen zu dem Fahrzeug geben, das Sie bewerten möchten? Zum Beispiel Marke, Modell und Erstzulassungsjahr.'
+        content: 'Willkommen bei Fahrzeug AI-Chat! Ich bin Ihr Assistent für die Fahrzeugbegutachtung. Können Sie mir bitte einige grundlegende Informationen zu dem Fahrzeug geben, das Sie bewerten möchten? Zum Beispiel Marke, Modell und Erstzulassungsjahr.'
       }]);
     }, 500);
 
@@ -161,7 +161,7 @@ Am Ende der Konversation exportierst du die Antworten als Klartextblock im besch
 
       // If there's an image attachment, we need to include it in the message
       if (newMessage.attachments?.length) {
-        messageHistory.push({
+        const imageMessage = {
           role: "user",
           content: [
             {
@@ -171,7 +171,11 @@ Am Ende der Konversation exportierst du die Antworten als Klartextblock im besch
               }
             }
           ]
-        });
+        };
+        
+        // Need to cast to 'any' to bypass TypeScript's strict typing here
+        // as the API accepts this format but our type definition doesn't
+        messageHistory.push(imageMessage as any);
       }
 
       // Make API request to OpenAI
@@ -263,7 +267,7 @@ Am Ende der Konversation exportierst du die Antworten als Klartextblock im besch
   return (
     <div className="flex flex-col h-full">
       {/* Progress bar */}
-      <div className="w-full bg-gray-200 rounded-full h-2.5 mb-4">
+      <div className="w-full bg-gray-700 rounded-full h-2.5 mb-4">
         <div 
           className="bg-truck-yellow h-2.5 rounded-full transition-all duration-500 ease-in-out" 
           style={{ width: `${progress}%` }}
@@ -273,8 +277,27 @@ Am Ende der Konversation exportierst du die Antworten als Klartextblock im besch
       {/* Messages container */}
       <div 
         ref={chatContainerRef}
-        className="flex-1 overflow-y-auto p-4 space-y-4 bg-white rounded-lg"
+        className="flex-1 overflow-y-auto p-4 space-y-4 bg-[#1a202c] rounded-lg"
       >
+        {messages.length === 0 && (
+          <div className="flex flex-col items-center justify-center h-full text-center">
+            <div className="bg-truck-yellow rounded-full p-6 mb-4">
+              <MessageSquare className="h-10 w-10 text-[#1a202c]" />
+            </div>
+            <h2 className="text-2xl font-bold text-truck-yellow mb-3">Willkommen bei Fahrzeug AI-Chat</h2>
+            <p className="text-gray-300 mb-8 max-w-md">
+              Lade ein Bild deines Fahrzeugs hoch (JPG oder PNG) und erhalte sofort KI-gestützte Informationen.
+            </p>
+            <div 
+              className="border-2 border-dashed border-gray-500 rounded-lg p-8 cursor-pointer hover:border-truck-yellow transition-colors"
+              onClick={triggerFileUpload}
+            >
+              <Upload className="h-10 w-10 text-gray-400 mx-auto mb-2" />
+              <p className="text-gray-400">Klicke hier oder ziehe eine Datei hierher, um ein Bild hochzuladen</p>
+            </div>
+          </div>
+        )}
+        
         {messages.map((message, index) => (
           <div 
             key={index} 
@@ -307,27 +330,27 @@ Am Ende der Konversation exportierst du die Antworten als Klartextblock im besch
       </div>
 
       {/* Input area */}
-      <div className="mt-4 border rounded-lg p-2 flex flex-col">
+      <div className="mt-4 bg-[#1f2937] rounded-lg p-3 flex flex-col">
         <Textarea
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder="Schreiben Sie Ihre Nachricht..."
-          className="min-h-[80px] resize-none border-0 focus-visible:ring-0"
+          placeholder="Stelle eine Frage oder lade ein Bild hoch..."
+          className="min-h-[60px] resize-none border-0 focus-visible:ring-0 bg-[#2d3748] text-white placeholder-gray-400"
           disabled={isLoading}
         />
         
-        <div className="flex items-center justify-between pt-2">
+        <div className="flex items-center justify-between pt-3">
           <div className="flex gap-2">
             <Button
               variant="outline"
               size="icon"
               onClick={toggleListening}
-              className={cn(isListening && "bg-red-100")}
+              className={cn("bg-transparent border-gray-600 hover:bg-gray-700", isListening && "bg-red-900 border-red-700")}
               disabled={isLoading}
               type="button"
             >
-              <Mic className={cn("h-4 w-4", isListening && "text-red-500")} />
+              <Mic className={cn("h-4 w-4 text-gray-300", isListening && "text-red-400")} />
             </Button>
             <Button
               variant="outline"
@@ -335,8 +358,9 @@ Am Ende der Konversation exportierst du die Antworten als Klartextblock im besch
               onClick={triggerFileUpload}
               disabled={isLoading}
               type="button"
+              className="bg-transparent border-gray-600 hover:bg-gray-700"
             >
-              <Image className="h-4 w-4" />
+              <Image className="h-4 w-4 text-gray-300" />
               <input 
                 type="file" 
                 ref={fileInputRef}
@@ -354,7 +378,7 @@ Am Ende der Konversation exportierst du die Antworten als Klartextblock im besch
           <Button 
             onClick={handleSend} 
             disabled={isLoading || (!input.trim() && !fileInputRef.current?.files?.length)}
-            className="bg-truck-dark-blue hover:bg-truck-blue"
+            className="bg-truck-yellow hover:bg-yellow-500 text-[#1a202c]"
           >
             Senden <Send className="ml-2 h-4 w-4" />
           </Button>
