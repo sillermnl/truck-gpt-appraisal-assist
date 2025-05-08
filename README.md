@@ -1,73 +1,65 @@
-# Welcome to your Lovable project
 
-## Project info
+# LKW-GPT Appraisal Assistant
 
-**URL**: https://lovable.dev/projects/4205c6cd-b2e6-4f0f-806c-69a70a062a1f
+Eine moderne Webanwendung zur Begutachtung von LKWs mit Hilfe von ChatGPT und Vision-AI für die Analyse von Fahrzeugscheinen.
 
-## How can I edit this code?
+## Features
 
-There are several ways of editing your application.
+- Interaktiver Chat mit GPT-4o Integration
+- Bild-Upload-Funktion für Fahrzeugscheine
+- Spracherkennung zum Diktieren von Nachrichten
+- Strukturierte Datenerfassung gemäß vordefinierten Fragebögen
+- Fortschrittsanzeige für den Benutzer
+- Responsives Design mit modernem UI
 
-**Use Lovable**
+## Installation
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/4205c6cd-b2e6-4f0f-806c-69a70a062a1f) and start prompting.
+1. Klonen Sie das Repository:
+```bash
+git clone https://github.com/yourusername/truck-gpt-appraisal-assist.git
+cd truck-gpt-appraisal-assist
+```
 
-Changes made via Lovable will be committed automatically to this repo.
+2. Installieren Sie die Abhängigkeiten:
+```bash
+npm install
+```
 
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+3. Starten Sie die Anwendung:
+```bash
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+## Deployment auf Railway
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+1. Forken Sie das Repository auf GitHub
+2. Verbinden Sie Ihr Railway-Konto mit GitHub
+3. Erstellen Sie ein neues Projekt in Railway und wählen Sie das Repository aus
+4. Fügen Sie die erforderlichen Umgebungsvariablen hinzu (falls benötigt)
+5. Starten Sie den Deployment-Prozess
 
-**Use GitHub Codespaces**
+## Verwendung
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+1. Öffnen Sie die App in Ihrem Browser
+2. Geben Sie Ihren OpenAI API-Schlüssel ein
+3. Beginnen Sie ein Gespräch mit dem KI-Assistenten
+4. Laden Sie bei Bedarf Bilder von Fahrzeugdokumenten hoch
+5. Nutzen Sie die Spracherkennung für eine handfreie Bedienung
+6. Der Assistent führt Sie durch den strukturierten Fragebogen zur Fahrzeugbewertung
+7. Nach Abschluss erhalten Sie die Daten im erforderlichen Format
 
-## What technologies are used for this project?
+## API-Schlüssel
 
-This project is built with:
+Sie benötigen einen gültigen OpenAI API-Schlüssel mit Zugriff auf das GPT-4o Modell, um die Anwendung nutzen zu können. Der API-Schlüssel wird lokal in Ihrem Browser gespeichert und nicht an einen Server übertragen.
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## Technologie-Stack
 
-## How can I deploy this project?
+- React mit TypeScript
+- Tailwind CSS für das Styling
+- shadcn/ui für UI-Komponenten
+- OpenAI API für die KI-Integration
+- Web Speech API für Spracherkennung
 
-Simply open [Lovable](https://lovable.dev/projects/4205c6cd-b2e6-4f0f-806c-69a70a062a1f) and click on Share -> Publish.
+## Lizenz
 
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+MIT
